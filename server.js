@@ -54,24 +54,25 @@ app.get('/ad', function (req, res) {
 });
 
 
-//Still testing
+//Takes a json ["username":"...","password":"..."] and returns username if is valid or "-1" if invalid
 app.post('/validateuser', function(req,res){
-  console.log(req.body);
-  var jsonData="";
-  req.on('data', function (chunk) {
-          jsonData += chunk;
-  });
-  req.on('end', function () {
-    console.log("username: "+req.body.username);
-    console.log("password: "+req.body.password);                                           
+  var jsonData='';
+   req.on('data', function(chunk){jsonData+=chunk;});
+   req.on('end', function () {
+    jsonData=JSON.parse(jsonData);
+    //console.log("username: "+jsonData.username);
+    //console.log("password: "+jsonData.password);                                           
 	  var MongoClient = require('mongodb').MongoClient;
       MongoClient.connect("mongodb://localhost/byu-classifieds", function(err, db) {
         if(err) throw err;
         db.collection("users", function(err, users){
           if(err) throw err;
-          users.find(req.body,function(err, items){
+          users.findOne(jsonData,function(err, items){
             res.status(200);
-            res.end(items);
+	    if(items)
+	    	res.end(items.username);
+	    else
+		res.end("-1");
           });
         });
       });
