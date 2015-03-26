@@ -57,7 +57,14 @@ app.get('/ad', function (req, res) {
 //Still testing
 app.post('/validateuser', function(req,res){
   console.log(req.body);
-	var MongoClient = require('mongodb').MongoClient;
+  var jsonData="";
+  req.on('data', function (chunk) {
+          jsonData += chunk;
+  });
+  req.on('end', function () {
+    console.log("username: "+req.body.username);
+    console.log("password: "+req.body.password);                                           
+	  var MongoClient = require('mongodb').MongoClient;
       MongoClient.connect("mongodb://localhost/byu-classifieds", function(err, db) {
         if(err) throw err;
         db.collection("users", function(err, users){
@@ -68,6 +75,7 @@ app.post('/validateuser', function(req,res){
           });
         });
       });
+    });
 });
 
 //---------------------------------------------------
