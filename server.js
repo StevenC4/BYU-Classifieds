@@ -62,7 +62,7 @@ app.post('/validateuser', function(req,res){
         if(err) throw err;
         db.collection("users", function(err, users){
           if(err) throw err;
-          users.find(req.body,function(err, items,res){
+          users.find(req.body,function(err, items){
             res.status(200);
             res.end(items);
           });
