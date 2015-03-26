@@ -52,13 +52,21 @@ app.get('/ad', function (req, res) {
   res.send("Advertisement Page " + req.query.q);
 });
 
-//---------------------------------------------------
-//Directs the user to the page that lets the user
-//log in so that they can create advertisements and
-//maybe comment on posts if we implement that.
-//---------------------------------------------------
-app.get('/login', function (req, res) {
-  res.send("Login Page");
+
+//Still testing
+app.post('/validateuser', function(req,res){
+  console.log(req.body);
+	var MongoClient = require('mongodb').MongoClient;
+      MongoClient.connect("mongodb://localhost/byu-classifieds", function(err, db) {
+        if(err) throw err;
+        db.collection("users", function(err, users){
+          if(err) throw err;
+          users.find(req.body,function(err, items){
+            res.status(200);
+            res.end(items);
+          });
+        });
+      });
 });
 
 //---------------------------------------------------
