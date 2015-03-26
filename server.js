@@ -58,9 +58,9 @@ app.get('/ad', function (req, res) {
 app.post('/validateuser', function(req,res){
   console.log(req.body);
 	var MongoClient = require('mongodb').MongoClient;
-      MongoClient.connect("mongodb://localhost/byu-classifieds", function(err, db,req,res) {
+      MongoClient.connect("mongodb://localhost/byu-classifieds", function(err, db) {
         if(err) throw err;
-        db.collection("users", function(err, users,req,res){
+        db.collection("users", function(err, users){
           if(err) throw err;
           users.find(req.body,function(err, items,res){
             res.status(200);
