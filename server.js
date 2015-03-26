@@ -55,14 +55,13 @@ app.get('/ad', function (req, res) {
 
 //Still testing
 app.post('/validateuser', function(req,res){
-	var username=req.body.username;
-	var pass=req.body.password;
+  console.log(req.body);
 	var MongoClient = require('mongodb').MongoClient;
-      MongoClient.connect("mongodb://localhost/byu-classifieds", function(err, db) {
+      MongoClient.connect("mongodb://localhost/byu-classifieds", function(err, db,req,res) {
         if(err) throw err;
-        db.collection("users", function(err, users){
+        db.collection("users", function(err, users,req,res){
           if(err) throw err;
-          users.find(req.body,function(err, items){
+          users.find(req.body,function(err, items,res){
             res.status(200);
             res.end(items);
           });
