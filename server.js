@@ -53,6 +53,7 @@ app.get('/ad', function (req, res) {
 });
 
 
+//Still testing
 app.post('/validateuser', function(req,res){
 	var username=req.body.username;
 	var pass=req.body.password;
@@ -62,8 +63,8 @@ app.post('/validateuser', function(req,res){
         db.collection("users", function(err, users){
           if(err) throw err;
           users.find(req.body,function(err, items){
-            req.status(200);
-            req.end(items);
+            res.status(200);
+            res.end(items);
           });
         });
       });
