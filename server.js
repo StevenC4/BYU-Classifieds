@@ -6,7 +6,7 @@ var url = require('url');
 var app = express();
 var MongoClient=require('mongodb').MongoClient;
 app.use(bodyParser.json());
-http.createServer(app).listen(80);
+http.createServer(app).listen(8080);
 app.use('/', express.static('./html', {maxAge: 60*60*1000}));
 
 //---------------------------------------------------
@@ -54,23 +54,21 @@ app.get('/ad', function (req, res) {
 });
 
 
-//Takes a json ["username":"...","password":"..."] and returns username if is valid or "-1" if invalid
+//Takes a json template containing attributes we are looking for and returns user json if is valid or "-1" if invalid
 app.post('/validateuser', function(req,res){
   var jsonData='';
    req.on('data', function(chunk){jsonData+=chunk;});
    req.on('end', function () {
-    jsonData=JSON.parse(jsonData);
-    //console.log("username: "+jsonData.username);
-    //console.log("password: "+jsonData.password);                                           
-	  var MongoClient = require('mongodb').MongoClient;
-      MongoClient.connect("mongodb://localhost/byu-classifieds", function(err, db) {
+   jsonData=JSON.parse(jsonData);
+   var MongoClient = require('mongodb').MongoClient;
+   MongoClient.connect("mongodb://localhost/byu-classifieds", function(err, db) {
         if(err) throw err;
         db.collection("users", function(err, users){
           if(err) throw err;
           users.findOne(jsonData,function(err, items){
             res.status(200);
 	    if(items)
-	    	res.end(items.username);
+	    	res.end(JSON.stringify(items));
 	    else
 		res.end("-1");
           });
@@ -79,12 +77,67 @@ app.post('/validateuser', function(req,res){
     });
 });
 
-//---------------------------------------------------
-//Directs the user to a user profile. This could be
-//a page that only the user can see their own profile
-//or if we want we can let them view other user
-//profiles.
-//---------------------------------------------------
-app.get('/profile', function (req, res) {
-  res.send("User Profile " + req.query.q);
+//call this with all the data in json that should be inserted as that user
+app.post('/insertuser', function(req,res){
+  var jsonData='';
+   req.on('data', function(chunk){jsonData+=chunk;});
+   req.on('end', function () {
+   jsonData=JSON.parse(jsonData);
+   var MongoClient = require('mongodb').MongoClient;
+   MongoClient.connect("mongodb://localhost/byu-classifieds", function(err, db) {
+			if(err)
+				throw err;
+			db.collection('users').insert(jsonData, function(err,records){});
+	});
+   });
+   res.writeHead(200);
+   res.end();
 });
+
+//call this with json we want to update--also needs to include username to findthe right user
+app.post('/updateuser', function(req,res){
+  var jsonData='';
+   req.on('data', function(chunk){jsonData+=chunk;});
+   req.on('end', function () {
+    jsonData=JSON.parse(jsonData);                                          
+	  var MongoClient = require('mongodb').MongoClient;
+      MongoClient.connect("mongodb://localhost/byu-classifieds", function(err, db) {
+        if(err) throw err;
+        db.collection("users").findAndModify(
+    		{ username: jsonData.username },     // query
+    		[],               // represents a sort order if multiple matches
+    		{ $set: jsonData },   // update statement
+    		{ new: true },    // options - new to return the modified document
+    		function(err,doc) {
+    			if(err)
+    				res.writeHead(500);
+    			else
+    			{
+    				res.writeHead(200);
+    				res.end(JSON.stringify(doc));
+    			}
+    		});
+      });
+    });
+});
+
+//Call this with json representing user we want to remove
+app.post('/removeuser', function(req,res){
+  var jsonData='';
+   req.on('data', function(chunk){jsonData+=chunk;});
+   req.on('end', function () {
+    jsonData=JSON.parse(jsonData);                                          
+	  var MongoClient = require('mongodb').MongoClient;
+      MongoClient.connect("mongodb://localhost/byu-classifieds", function(err, db) {
+        if(err) throw err;
+        db.collection("users").remove(jsonData, function(err,removed){
+        	if(err)
+        		res.writeHead(500);
+        	else
+        		res.writeHead(200);
+        	res.end();
+        });
+      });
+    });
+});
+
