@@ -6,7 +6,7 @@ var url = require('url');
 var app = express();
 var MongoClient=require('mongodb').MongoClient;
 app.use(bodyParser.json());
-http.createServer(app).listen(8080);
+http.createServer(app).listen(80);
 app.use('/', express.static('./html', {maxAge: 60*60*1000}));
 
 //---------------------------------------------------
