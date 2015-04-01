@@ -11,34 +11,30 @@
 <body>
 <div class="container">
     <h1 class="text-center">Welcome to your profile management page, Bob!</h1>
-    <div class="well">
+    <div class="well personal-information">
         <h2 class="text-center">Personal Information</h2>
         <form>
-            <table class="table table-fluid table-center">
+            <table class="table table-fluid table-striped table-condensed table-center personal-information">
                 <tr>
                     <td>Username:</td>
                     <td>bs92</td>
-                    <td></td>
                 </tr>
                 <tr>
                     <td>Password:</td>
                     <td><button>Change</button></td>
-                    <td></td>
                 </tr>
                 <tr>
                     <td>Full Name:</td>
                     <td><input type="text" value="Bob Smith"/></td>
-                    <td></td>
                 </tr>
                 <tr>
                     <td>Address:</td>
                     <td><input type="text" value="275 Main St."/></td>
-                    <td></td>
                 </tr>
                 <tr>
                     <td>State:</td>
                     <td>
-                        <select>
+                        <select class="state">
                             <option value="select" disabled>Select a state</option>
                             <option value="AL">Alabama</option>
                             <option value="AK">Alaska</option>
@@ -93,18 +89,17 @@
                             <option value="WY">Wyoming</option>
                         </select>
                     </td>
-                    <td></td>
                 </tr>
                 <tr>
                     <td>Zip:</td>
                     <td><input type="number" value="84602"/></td>
-                    <td></td>
                 </tr>
                 <tr>
                     <td>Phone number:</td>
-                    <td>
-                        <input type="tel" value="810-555-6242"/>
-                    </td>
+                    <td><input type="tel" value="810-555-6242"/></td>
+                </tr>
+                <tr>
+                    <td>Phone type:</td>
                     <td>
                         <select>
                             <option value="home">Home</option>
@@ -117,31 +112,31 @@
                 <tr>
                     <td>Email:</td>
                     <td><input type="email" value="bob.smith@byu.edu"/></td>
-                    <td></td>
                 </tr>
                 <tr>
                     <td>Image:</td>
                     <td>
-                        <img class="newline img-responsive" src="images/no_image_icon.gif">
-                        <button class="newline">Upload</button>
+                        <table>
+                            <tr>
+                                <td><img class="img-responsive" src="images/no_image_icon.gif"></td>
+                            </tr>
+                            <tr>
+                                <td><button>Upload</button></td>
+                            </tr>
+                        </table>
                     </td>
-                    <td></td>
                 </tr>
-                <tr>
-                    <td colspan="3">
-                        <button>Update Information</button>
-                    </td>
-                </tr>
+                <tr><td colspan="3"><button type="submit">Update Information</button></td></tr>
             </table>
         </form>
     </div>
-    <br>
+    <hr>
     <div class="well">
         <h2 class="text-center">Your posted items</h2>
-        <table class="table">
+        <table class="table table-fluid table-striped">
             <thead>
             <tr>
-                <th>No.</th>
+                <th></th>
                 <th>Short Description</th>
                 <th>Thumbnail</th>
                 <th></th>
@@ -149,28 +144,28 @@
             </thead>
             <tbody>
             <tr>
-                <td>1</td>
-                <td><a href="">Fender electric guitar</a></td>
-                <td><img src="images/no_image_icon.gif"></td>
-                <td><button>Delete</button></td>
+                <td><span title="Edit" class="glyphicon glyphicon-edit"></span></td>
+                <td><a title="View" href="">Fender electric guitar</a></td>
+                <td><img title="Product Image" class="img-responsive" src="images/no_image_icon.gif"></td>
+                <td><span title="Delete" class="glyphicon glyphicon-trash"></span></td>
             </tr>
             <tr>
-                <td>2</td>
-                <td><a href="">Barely used tupperware - mint condition</a></td>
-                <td><img src="images/no_image_icon.gif"></td>
-                <td><button>Delete</button></td>
+                <td><span title="Edit" class="glyphicon glyphicon-edit"></span></td>
+                <td><a title="View" href="">Barely used tupperware - mint condition</a></td>
+                <td><img title="Product Image" class="img-responsive" src="images/no_image_icon.gif"></td>
+                <td><span title="Delete" class="glyphicon glyphicon-trash"></span></td>
             </tr>
             <tr>
-                <td>3</td>
-                <td><a href="">Homemade leather belt</a></td>
-                <td><img src="images/no_image_icon.gif"></td>
-                <td><button>Delete</button></td>
+                <td><span title="Edit" class="glyphicon glyphicon-edit"></span></td>
+                <td><a title="View" href="">Homemade leather belt</a></td>
+                <td><img title="Product Image" class="img-responsive" src="images/no_image_icon.gif"></td>
+                <td><span title="Delete" class="glyphicon glyphicon-trash"></span></td>
             </tr>
             <tr>
-                <td>4</td>
-                <td><a href="">Babysitting</a></td>
-                <td><img src="images/no_image_icon.gif"></td>
-                <td><button>Delete</button></td>
+                <td><span title="Edit" class="glyphicon glyphicon-edit"></span></td>
+                <td><a title="View" href="">Babysitting</a></td>
+                <td><img title="Product Image" class="img-responsive" src="images/no_image_icon.gif"></td>
+                <td><span title="Delete" class="glyphicon glyphicon-trash"></span></td>
             </tr>
             </tbody>
         </table>

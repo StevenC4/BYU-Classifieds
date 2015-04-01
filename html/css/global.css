@@ -1,6 +1,12 @@
 .table-nonfluid {width: auto !important;}
-.table-center {margin: 0 auto !important; float: none !important; }
-.newline{display: block; margin: 0 auto;}
+.table-center {margin: 0 auto !important; float: none !important;}
+
 .table td, .table th {text-align: center;}
 .table td:first-child { font-weight: bold;}
 .table tbody>tr>td {vertical-align: middle;}
+
+span.glyphicon {cursor: pointer; font-size: 1.5em;}
+
+table.personal-information input, table.personal-information select.state {width: 9.75em;}
+
+div.personal-information {max-width:40em; margin: 0 auto;}
