@@ -9,6 +9,12 @@ span.glyphicon {cursor: pointer; font-size: 1.5em;}
 
 table.personal-information input, table.personal-information select.state {width: 9.75em;}
 
-div.personal-information {max-width:40em; margin: 0 auto;}
-div.register-here {margin-top: 2.5em;}
+div.well.personal-information, div.well.login {max-width:40em; margin: 0 auto;}
+
 div.register-here p a {cursor: pointer;}
+
+div.well.login table {width: 65%;}
+div.well.login table tr td input {width: 100%;}
+
+div.login-button {text-align: center; margin-top: 1em;}
+div.login-button button {width: 65%;}
