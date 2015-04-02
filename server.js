@@ -48,7 +48,7 @@ app.post('/insertuser', function(req,res){
    MongoClient.connect("mongodb://localhost/byu-classifieds", function(err, db) {
 			if(err)
 				throw err;
-        db.collection("users").findOne({username:+ jsonData.username}, function(err,record){
+        db.collection("users").findOne({username: jsonData.username}, function(err,record){
       if(!record)
       {
 			   db.collection("users").insert(jsonData, function(err,records){});
