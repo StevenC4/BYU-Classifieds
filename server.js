@@ -48,11 +48,21 @@ app.post('/insertuser', function(req,res){
    MongoClient.connect("mongodb://localhost/byu-classifieds", function(err, db) {
 			if(err)
 				throw err;
-			db.collection('users').insert(jsonData, function(err,records){});
-	});
+        db.collection("users").findOne("username: "+jsonData.username, function(err,record){
+      if(!record)
+      {
+			   db.collection("users").insert(jsonData, function(err,records){});
+         res.writeHead(200);
+         res.end();
+      }
+      else
+      {
+        res.writeHead(200);
+        res.end("exists");
+      }
+	    });
    });
-   res.writeHead(200);
-   res.end();
+   });
 });
 
 //call this with json we want to update--also needs to include username to findthe right user
