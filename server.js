@@ -123,7 +123,7 @@ app.post('/find', function (req, res) {
     if(err) throw err;
     db.collection("ads", function(err, ads){
       if(err) throw err;
-      ads.find({"Title": "/"+jsonData.Title+"/"}, function(err, items){
+      ads.find({Title : new RegExp(jsonData.Title)}, function(err, items){
         items.toArray(function(err, itemArr){
           res.writeHead(200);
           res.end(JSON.stringify(itemArr));
