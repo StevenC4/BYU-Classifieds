@@ -112,6 +112,23 @@ app.post('/removeuser', function(req,res){
     });
 });
 
+
+app.get('/find', function (req, res) {
+  var MongoClient = require('mongodb').MongoClient;
+  MongoClient.connect("mongodb://localhost/byu-classifieds", function(err, db) {
+    if(err) throw err;
+    db.collection("ads", function(err, ads){
+      if(err) throw err;
+      ads.find({"Title": "/"+req.query.Title+"/"}, function(err, items){
+        items.toArray(function(err, itemArr){
+          res.writeHead(200);
+          res.end(JSON.stringify(itemArr));
+        });
+      });
+    });
+  });
+});
+
 //---------------------------------------------------
 //Get All Items
 //---------------------------------------------------
