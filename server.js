@@ -114,12 +114,16 @@ app.post('/removeuser', function(req,res){
 
 
 app.post('/find', function (req, res) {
-  var MongoClient = require('mongodb').MongoClient;
-  MongoClient.connect("mongodb://localhost/byu-classifieds", function(err, db) {
+  var jsonData='';
+   req.on('data', function(chunk){jsonData+=chunk;});
+   req.on('end', function () {
+    jsonData=JSON.parse(jsonData);
+    var MongoClient = require('mongodb').MongoClient;
+    MongoClient.connect("mongodb://localhost/byu-classifieds", function(err, db) {
     if(err) throw err;
     db.collection("ads", function(err, ads){
       if(err) throw err;
-      ads.find({"Title": "/"+req.query.Title+"/"}, function(err, items){
+      ads.find({"Title": "/"+jsonData.Title+"/"}, function(err, items){
         items.toArray(function(err, itemArr){
           res.writeHead(200);
           res.end(JSON.stringify(itemArr));
@@ -127,6 +131,7 @@ app.post('/find', function (req, res) {
       });
     });
   });
+});
 });
 
 //---------------------------------------------------
