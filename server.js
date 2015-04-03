@@ -113,7 +113,7 @@ app.post('/removeuser', function(req,res){
 });
 
 
-app.get('/find', function (req, res) {
+app.post('/find', function (req, res) {
   var MongoClient = require('mongodb').MongoClient;
   MongoClient.connect("mongodb://localhost/byu-classifieds", function(err, db) {
     if(err) throw err;
