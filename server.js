@@ -158,19 +158,49 @@ app.get('/get_all_items', function (req, res) {
 //---------------------------------------------------
 //Get Item
 //---------------------------------------------------
-app.get('/get_item', function (req, res) {
-  console.log(req.query.ID);
-  var ObjectId = require('mongodb').ObjectID;
+app.post('/get_item', function (req, res) {
+  var jsonData='';
+  req.on('data', function(chunk){jsonData+=chunk;});
+  req.on('end', function () {
+    jsonData=JSON.parse(jsonData);
+    console.log(jsonData.ID);
+    var ObjectId = require('mongodb').ObjectID;
+    var MongoClient = require('mongodb').MongoClient;
+    MongoClient.connect("mongodb://localhost/byu-classifieds", function(err, db) {
+      if(err) throw err;
+      db.collection("ads", function(err, ads){
+        ads.findOne({_id: ObjectId(jsonData.ID)}, function(err, items) {
+          if(err){console.log(err);}
+          console.log(items);
+          res.writeHead(200);
+          res.end(JSON.stringify(items));
+        });
+      });
+    });
+  });
+});
 
-  var MongoClient = require('mongodb').MongoClient;
-  MongoClient.connect("mongodb://localhost/byu-classifieds", function(err, db) {
-    if(err) throw err;
-    db.collection("ads", function(err, ads){
-      ads.findOne({_id: ObjectId(req.query.ID)}, function(err, items) {
-        if(err){console.log(err);}
-        console.log(items);
-        res.writeHead(200);
-        res.end(JSON.stringify(items));
+//---------------------------------------------------
+//Get Items of certain category
+//---------------------------------------------------
+app.post('/get_category_items', function (req, res) {
+  var jsonData='';
+  req.on('data', function(chunk){jsonData+=chunk;});
+  req.on('end', function () {
+    jsonData=JSON.parse(jsonData);
+    var MongoClient = require('mongodb').MongoClient;
+    MongoClient.connect("mongodb://localhost/byu-classifieds", function(err, db) {
+      if(err) throw err;
+      db.collection("ads", function(err, ads){
+        if(err) throw err;
+        ads.find({Category: new RegExp(jsonData.Category)}, function(err, items){
+          items.toArray(function(err, itemArr){
+            console.log("Document Array: ");
+            console.log(itemArr);
+            res.writeHead(200);
+            res.end(JSON.stringify(itemArr));
+          });
+        });
       });
     });
   });
@@ -178,77 +208,106 @@ app.get('/get_item', function (req, res) {
 
 //---------------------------------------------------
 //Post Item
+//
+//Title = Name of the ad
+//Picture = picture of the item
+//UserID = ID of the user that posted the item
+//PostDate = Date of when the item was posted
+//Category = Chosen category of the item
+//Bought = Boolean of whether it was bought or sold
+//Comments = List of comment objects of userID and comment
 //---------------------------------------------------
 app.post('/post_item', function (req, res) {
-  console.log(req.body.Title);
-  console.log(req.body.Picture);
-  console.log(req.body.UserID);
-  console.log(req.body.PostDate);
-  console.log(req.body.Comments);
-
-  var MongoClient = require('mongodb').MongoClient;
-  MongoClient.connect("mongodb://localhost/byu-classifieds", function(err, db) {
-    if(err) throw err;
-    db.collection('ads').insert(req.body, function(err,records){
+  var jsonData='';
+  req.on('data', function(chunk){jsonData+=chunk;});
+  req.on('end', function () {
+    jsonData=JSON.parse(jsonData);
+    console.log(jsonData);
+    var MongoClient = require('mongodb').MongoClient;
+    MongoClient.connect("mongodb://localhost/byu-classifieds", function(err, db) {
       if(err) throw err;
-      console.log(records);
+      db.collection('ads').insert(jsonData, function(err,records){
+        if(err) throw err;
+        console.log(records);
+        res.writeHead(200);
+        res.end("Success");
+      });
     });
   });
-
-  res.writeHead(200);
-  res.end("");
 });
 
 //---------------------------------------------------
 //Delete Item
 //---------------------------------------------------
 app.post('/delete_item', function (req, res) {
-  console.log(req.body.ID);
-  var ObjectId = require('mongodb').ObjectID;
-
-  var MongoClient = require('mongodb').MongoClient;
-  MongoClient.connect("mongodb://localhost/byu-classifieds", function(err, db) {
-    if(err) throw err;
-    db.collection('ads', {}, function(err, ads) {
-        ads.remove({_id: ObjectId(req.body.ID)}, function(err, result) {
-            if (err) {
-                console.log(err);
-            }
-            console.log(result);
-            db.close();
-        });
+  var jsonData='';
+  req.on('data', function(chunk){jsonData+=chunk;});
+  req.on('end', function () {
+    jsonData=JSON.parse(jsonData);
+    console.log(jsonData.ID);
+    var ObjectId = require('mongodb').ObjectID;
+    var MongoClient = require('mongodb').MongoClient;
+    MongoClient.connect("mongodb://localhost/byu-classifieds", function(err, db) {
+      if(err) throw err;
+      db.collection('ads', {}, function(err, ads) {
+          ads.remove({_id: ObjectId(jsonData)}, function(err, result) {
+              if (err) {
+                  console.log(err);
+              }
+              console.log(result);
+              db.close();
+              res.writeHead(200);
+              res.end("Success");
+          });
+      });
     });
   });
-  res.writeHead(200);
-  res.end("");
 });
 
 //---------------------------------------------------
 //Comment on Item
 //---------------------------------------------------
 app.post('/comment', function (req, res) {
-  console.log(req.body.ID);
-  console.log(req.body.Comment);
-  console.log(req.body.UserID);
-  var Comment = {UserID: req.body.UserID, Comment: req.body.Comment}
-  var ObjectId = require('mongodb').ObjectID;
+  var jsonData='';
+  req.on('data', function(chunk){jsonData+=chunk;});
+  req.on('end', function () {
+    jsonData=JSON.parse(jsonData);
+    var ObjectId = require('mongodb').ObjectID;
+    var Comment = {UserID: jsonData.UserID, Comment: jsonData.Comment}
+    var MongoClient = require('mongodb').MongoClient;
+    MongoClient.connect("mongodb://localhost/byu-classifieds", function(err, db) {
+      if(err) throw err;
+      db.collection('ads').findAndModify(
+        {_id: ObjectId(jsonData.ID)},
+        [],
+        {$addToSet: {Comments: Comment}},
+        {},
+        function(err, object) {
+          if (err){
+            console.warn(err.message);
+          }
+          console.log(object);
+          res.writeHead(200);
+          res.end("Success");
+        });
+    });
+  });
+});
 
+app.post('/remove_all_items', function (req, res) {
   var MongoClient = require('mongodb').MongoClient;
   MongoClient.connect("mongodb://localhost/byu-classifieds", function(err, db) {
     if(err) throw err;
-    db.collection('ads').findAndModify(
-      {_id: ObjectId(req.body.ID)},
-      [],
-      {$addToSet: {Comments: Comment}},
-      {},
-      function(err, object) {
-        if (err){
-          console.warn(err.message);
-        }
-        console.log(object);
-      });
+    db.collection('ads', {}, function(err, ads) {
+        ads.remove({}, function(err, result) {
+            if (err) {
+                console.log(err);
+            }
+            console.log(result);
+            db.close();
+            res.writeHead(200);
+            res.end("Success");
+        });
+    });
   });
-
-  res.writeHead(200);
-  res.end("");
 });
