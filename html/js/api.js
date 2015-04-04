@@ -16,7 +16,7 @@ angular.module("byu.api", [])
             return $http.post("http://52.10.167.115/validateuser")
         },
         find: function(title){
-            return $http.post("http://52.10.167.115/find"
+            return $http.post("http://52.10.167.115/find",
             {
               "Title": title
             })
@@ -31,13 +31,13 @@ angular.module("byu.api", [])
             })
         },
         getCategoryItems: function(category){
-            return $http.post("http://52.10.167.115/get_category_item"
+            return $http.post("http://52.10.167.115/get_category_item",
             {
               "Category": category
             })
         },
         postItem: function(title, path, user, date, category){
-            return $http.post("http://52.10.167.115/post_item"
+            return $http.post("http://52.10.167.115/post_item",
             {
               "Title": title,
               "Picture": path,
@@ -49,13 +49,13 @@ angular.module("byu.api", [])
             })
         },
         deleteItem: function(id){
-            return $http.post("http://52.10.167.115/delete_item"
+            return $http.post("http://52.10.167.115/delete_item",
             {
               "ID": id
             })
         },
         comment: function(itemID, user, comment){
-            return $http.post("http://52.10.167.115/comment"
+            return $http.post("http://52.10.167.115/comment",
             {
               "ID": itemID,
               "UserID": user,

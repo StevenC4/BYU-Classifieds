@@ -1,4 +1,4 @@
-angular.module("app", ['ui.router', 'byu.controllers'])
+angular.module('app', ['ui.router', 'byu.controllers'])
 
 .config(["$stateProvider", "$urlRouterProvider",
     function($stateProvider, $urlRouterProvider){
@@ -14,21 +14,21 @@ angular.module("app", ['ui.router', 'byu.controllers'])
 
     $stateProvider.state('home', {
         url:'/home',
-        templateUrl: '',
+        templateUrl: '/partials/home.html',
         controller:"",
         title: 'BYU Classifieds - Home'
     });
 
     $stateProvider.state('login', {
         url:'/login',
-        templateUrl: '',
+        templateUrl: '/partials/login.html',
         controller:"",
         title: 'Login'
     });
 
     $stateProvider.state('register', {
         url:'/register',
-        templateUrl: '',
+        templateUrl: '/partials/register.html',
         controller:"",
         title: 'Welcome! Please Register'
     });
@@ -37,7 +37,7 @@ angular.module("app", ['ui.router', 'byu.controllers'])
         url:'/profile/:userID',
         resolve:{
             userID:function($stateParams){return $stateParams.userID},
-        }
+        },
         templateUrl: '',
         controller:"",
         title: 'User Profile'
@@ -73,4 +73,4 @@ angular.module("app", ['ui.router', 'byu.controllers'])
         title: 'View Item'
     });
 
-}])
+}]);

@@ -12,7 +12,7 @@ app.use('/', express.static('./html', {maxAge: 60*60*1000}));
 //Directs the user to the home page
 //---------------------------------------------------
 app.get('/', function (req, res) {
-  res.send("Home Page");
+  res.sendFile('template.html', {root: './html/'});
 });
 
 //Takes a json template containing attributes we are looking for and returns user json if is valid or "-1" if invalid
@@ -140,9 +140,15 @@ app.post('/find', function (req, res) {
 app.get('/get_all_items', function (req, res) {
   var MongoClient = require('mongodb').MongoClient;
   MongoClient.connect("mongodb://localhost/byu-classifieds", function(err, db) {
-    if(err) throw err;
+    if(err) {
+      res.writeHead(500);
+      res.end("Error");
+    }
     db.collection("ads", function(err, ads){
-      if(err) throw err;
+      if(err) {
+        res.writeHead(500);
+        res.end("Error");
+      }
       ads.find(function(err, items){
         items.toArray(function(err, itemArr){
           console.log("Document Array: ");
@@ -167,10 +173,17 @@ app.post('/get_item', function (req, res) {
     var ObjectId = require('mongodb').ObjectID;
     var MongoClient = require('mongodb').MongoClient;
     MongoClient.connect("mongodb://localhost/byu-classifieds", function(err, db) {
-      if(err) throw err;
+      if(err) {
+        res.writeHead(500);
+        res.end("Error");
+      }
       db.collection("ads", function(err, ads){
         ads.findOne({_id: ObjectId(jsonData.ID)}, function(err, items) {
-          if(err){console.log(err);}
+          if(err){
+            console.log(err);
+            res.writeHead(500);
+            res.end("Error");
+          }
           console.log(items);
           res.writeHead(200);
           res.end(JSON.stringify(items));
@@ -192,9 +205,16 @@ app.post('/get_category_items', function (req, res) {
     MongoClient.connect("mongodb://localhost/byu-classifieds", function(err, db) {
       if(err) throw err;
       db.collection("ads", function(err, ads){
-        if(err) throw err;
+        if(err) {
+          res.writeHead(500);
+          res.end("Error");
+        }
         ads.find({Category: new RegExp(jsonData.Category)}, function(err, items){
           items.toArray(function(err, itemArr){
+            if(err){
+              res.writeHead(500);
+              res.end("Error");
+            }
             console.log("Document Array: ");
             console.log(itemArr);
             res.writeHead(200);
@@ -225,9 +245,15 @@ app.post('/post_item', function (req, res) {
     console.log(jsonData);
     var MongoClient = require('mongodb').MongoClient;
     MongoClient.connect("mongodb://localhost/byu-classifieds", function(err, db) {
-      if(err) throw err;
+      if(err) {
+        res.writeHead(500);
+        res.end("Error");
+      }
       db.collection('ads').insert(jsonData, function(err,records){
-        if(err) throw err;
+        if(err) {
+          res.writeHead(500);
+          res.end("Error");
+        }
         console.log(records);
         res.writeHead(200);
         res.end("Success");
@@ -248,11 +274,17 @@ app.post('/delete_item', function (req, res) {
     var ObjectId = require('mongodb').ObjectID;
     var MongoClient = require('mongodb').MongoClient;
     MongoClient.connect("mongodb://localhost/byu-classifieds", function(err, db) {
-      if(err) throw err;
+      if(err) {
+        res.writeHead(500);
+        res.end("Error");
+      }
       db.collection('ads', {}, function(err, ads) {
-          ads.remove({_id: ObjectId(jsonData)}, function(err, result) {
+          ads.remove({_id: ObjectId(jsonData.ID)}, function(err, result) {
               if (err) {
                   console.log(err);
+                  db.close();
+                  res.writeHead(500);
+                  res.end("Error");
               }
               console.log(result);
               db.close();
@@ -276,7 +308,10 @@ app.post('/comment', function (req, res) {
     var Comment = {UserID: jsonData.UserID, Comment: jsonData.Comment}
     var MongoClient = require('mongodb').MongoClient;
     MongoClient.connect("mongodb://localhost/byu-classifieds", function(err, db) {
-      if(err) throw err;
+      if(err) {
+        res.writeHead(500);
+        res.end("Error");
+      }
       db.collection('ads').findAndModify(
         {_id: ObjectId(jsonData.ID)},
         [],
@@ -285,6 +320,8 @@ app.post('/comment', function (req, res) {
         function(err, object) {
           if (err){
             console.warn(err.message);
+            res.writeHead(500);
+            res.end("Error");
           }
           console.log(object);
           res.writeHead(200);
@@ -297,11 +334,17 @@ app.post('/comment', function (req, res) {
 app.post('/remove_all_items', function (req, res) {
   var MongoClient = require('mongodb').MongoClient;
   MongoClient.connect("mongodb://localhost/byu-classifieds", function(err, db) {
-    if(err) throw err;
+    if(err) {
+      res.writeHead(500);
+      res.end("Error");
+    }
     db.collection('ads', {}, function(err, ads) {
         ads.remove({}, function(err, result) {
             if (err) {
                 console.log(err);
+                db.close();
+                res.writeHead(500);
+                res.end("Error");
             }
             console.log(result);
             db.close();
