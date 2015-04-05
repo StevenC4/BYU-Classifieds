@@ -3,12 +3,13 @@ angular.module('app', ['ui.router', 'byu.controllers'])
     function($stateProvider, $urlRouterProvider){
 
     $urlRouterProvider.when('', 'home'); //base page is home page
+    $urlRouterProvider.when('/', 'home'); //base page is home page
     $urlRouterProvider.otherwise("/404/"); //if none of the states match, go to 404 error
 
     $stateProvider.state('404', {
-        url:'/404/',
-        title:"404 - page not found",
-        templateUrl:""
+        url:'/404',
+        templateUrl:"partials/404.html",
+        title:"404 - page not found"
     });
 
     $stateProvider.state('home', {
@@ -21,14 +22,14 @@ angular.module('app', ['ui.router', 'byu.controllers'])
     $stateProvider.state('login', {
         url:'/login',
         templateUrl: 'partials/login.html',
-        controller:"",
+        controller: "",
         title: 'Login'
     });
 
     $stateProvider.state('register', {
         url:'/register',
         templateUrl: 'partials/register.html',
-        controller:"",
+        controller: "user",
         title: 'Welcome! Please Register'
     });
 
@@ -37,8 +38,8 @@ angular.module('app', ['ui.router', 'byu.controllers'])
         resolve:{
             userID:function($stateParams){return $stateParams.userID},
         },
-        templateUrl: '',
-        controller:"",
+        templateUrl: "partials/profile.html",
+        controller: "user",
         title: 'User Profile'
     });
 
