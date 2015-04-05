@@ -1,1 +1,5 @@
-angular.module("byu.controllers",["byu.controllers.viewItem"]);
+angular.module("byu.controllers",[
+    "byu.controllers.viewItem",
+    "byu.controllers.user",
+    "byu.controllers.navBar"
+]);

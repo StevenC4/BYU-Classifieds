@@ -1,5 +1,4 @@
 angular.module('app', ['ui.router', 'byu.controllers'])
-
 .config(["$stateProvider", "$urlRouterProvider",
     function($stateProvider, $urlRouterProvider){
 
@@ -14,21 +13,21 @@ angular.module('app', ['ui.router', 'byu.controllers'])
 
     $stateProvider.state('home', {
         url:'/home',
-        templateUrl: '/partials/home.html',
+        templateUrl: 'partials/home.html',
         controller:"",
         title: 'BYU Classifieds - Home'
     });
 
     $stateProvider.state('login', {
         url:'/login',
-        templateUrl: '/partials/login.html',
+        templateUrl: 'partials/login.html',
         controller:"",
         title: 'Login'
     });
 
     $stateProvider.state('register', {
         url:'/register',
-        templateUrl: '/partials/register.html',
+        templateUrl: 'partials/register.html',
         controller:"",
         title: 'Welcome! Please Register'
     });
