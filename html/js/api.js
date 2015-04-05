@@ -2,6 +2,7 @@ angular.module("byu.api", [])
 
 .service("serverCalls", ["$http",
   function($http){
+    $http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
     return {
         validateUser: function(){
             return $http.post("http://52.10.167.115/validateuser")
@@ -25,10 +26,11 @@ angular.module("byu.api", [])
             return $http.get("http://52.10.167.115/get_all_items")
         },
         getItem: function(id){
-            return $http.post("http://52.10.167.115/get_item",
+            console.log(id);
+            return $http.post('/get_item',
             {
               "ID": id
-            })
+            });
         },
         getCategoryItems: function(category){
             return $http.post("http://52.10.167.115/get_category_item",

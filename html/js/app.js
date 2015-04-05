@@ -64,12 +64,9 @@ angular.module('app', ['ui.router', 'byu.controllers'])
     });
 
     $stateProvider.state('viewItem', {
-        url:'/items/:itemID',
-        resolve:{
-            itemID:function($stateParams){return $stateParams.itemID},
-        },
-        templateUrl: '',
-        controller: "",
+        url:'/items/{itemID}',
+        templateUrl: '/partials/view_item.html',
+        controller: "viewItem",
         title: 'View Item'
     });
 
