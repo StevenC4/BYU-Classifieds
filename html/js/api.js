@@ -4,8 +4,11 @@ angular.module("byu.api", [])
   function($http){
     $http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
     return {
-        validateUser: function(){
-            return $http.post("http://52.10.167.115/validateuser")
+        validateUser: function(username, password){
+            return $http.post("http://52.10.167.115/validateuser", {
+                "username": username,
+                "password": password
+            })
         },
         insertUser: function(){
             return $http.post("http://52.10.167.115/inserteuser")

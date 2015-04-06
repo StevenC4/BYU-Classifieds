@@ -20,9 +20,9 @@ angular.module('app', ['ui.router', 'byu.controllers'])
     });
 
     $stateProvider.state('login', {
-        url:'/login',
+        url: '/login',
         templateUrl: 'partials/login.html',
-        controller: "",
+        controller: 'user',
         title: 'Login'
     });
 
@@ -36,7 +36,7 @@ angular.module('app', ['ui.router', 'byu.controllers'])
     $stateProvider.state('profile', {
         url:'/profile/:userID',
         resolve:{
-            userID:function($stateParams){return $stateParams.userID},
+            userID:function($stateParams){return $stateParams.userID}
         },
         templateUrl: "partials/profile.html",
         controller: "user",
@@ -46,7 +46,7 @@ angular.module('app', ['ui.router', 'byu.controllers'])
     $stateProvider.state('viewCategory', {
         url:'/category/:category',
         resolve:{
-            category:function($stateParams){return $stateParams.category},
+            category:function($stateParams){return $stateParams.category}
         },
         templateUrl: '',
         controller: "",
@@ -56,7 +56,7 @@ angular.module('app', ['ui.router', 'byu.controllers'])
     $stateProvider.state('searchResult', {
         url:'/search/:query',
         resolve:{
-            query:function($stateParams){return $stateParams.query},
+            query:function($stateParams){return $stateParams.query}
         },
         templateUrl: '',
         controller: "",
