@@ -8,7 +8,11 @@ angular.module("byu.api", [])
             return $http.post("http://52.10.167.115/validateuser", {
                 "username": username,
                 "password": password
-            })
+            }).success(function(data, status, headers, config){
+                return data;
+            }).error(function(data, status, headers, config){
+                return data;
+            });
         },
         insertUser: function(){
             return $http.post("http://52.10.167.115/inserteuser")
