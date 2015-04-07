@@ -1,1 +1,15 @@
 <h1 class="text-center">Home Page!!!!</h1>
+<div class="container">
+  <div>
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th><h4><u>Categories</u></h4></th>
+        </tr>
+      </thead>
+      <tr ng-repeat="category in categories track by $index">
+        <td style="cursor: pointer">{{category.name}}</td>
+      </tr>
+    </table>
+  </div>
+</div>

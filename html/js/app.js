@@ -15,7 +15,7 @@ angular.module('app', ['ui.router', 'byu.controllers'])
     $stateProvider.state('home', {
         url:'/home',
         templateUrl: 'partials/home.html',
-        controller:"",
+        controller:"homeCtrl",
         title: 'BYU Classifieds - Home'
     });
 
