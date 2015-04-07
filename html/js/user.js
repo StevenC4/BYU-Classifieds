@@ -5,14 +5,16 @@ angular.module("byu.controllers.user", ["byu.api"])
         $scope.username = "";
         $scope.password = "";
         $scope.validateUser = function() {
-            var user = serverCalls.validateUser($scope.username, $scope.password);
-            console.log(user);
-            if (user == "-1") {
-                $scope.user = null;
+            var response = serverCalls.validateUser($scope.username, $scope.password);
+            response.then(function(result){
+              console.log(result.data);
+              if (result.data == "-1") {
+                  $scope.user = null;
 
-            } else {
-                $scope.user = user;
-                $state.go('profile');
-            }
+              } else {
+                  $scope.user = result.data;
+                  $state.go('profile');
+              }
+            });
         }
 }]);
