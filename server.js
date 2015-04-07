@@ -7,6 +7,7 @@ var url = require('url');
 var app = express();
 var util=require('util');
 var formidable=require('formidable');
+var crypto=require('crypto');
 app.use(bodyParser.json());
 http.createServer(app).listen(80);
 app.use('/', express.static('./html', {maxAge: 60*60*1000}));
@@ -17,8 +18,6 @@ app.post('/upload', function (req, res){
   var form = new formidable.IncomingForm();
   form.parse(req, function(err, fields, files) {
     res.writeHead(200, {'content-type': 'text/plain'});
-    res.write('received upload:\n\n');
-    res.end(util.inspect({fields: fields, files: files}));
   });
 
   form.on('end', function(fields, files) {
@@ -28,23 +27,25 @@ app.post('/upload', function (req, res){
     var file_name = this.openedFiles[0].name;
     /* Location where we want to copy the uploaded file */
     var new_location = 'uploads/';
-
-    fs.copy(temp_path, new_location + file_name, function(err) {  
+    var id = crypto.randomBytes(20).toString('hex');
+    fs.copy(temp_path, new_location + id + file_name, function(err) {  
       if (err) {
         console.error(err);
+	res.end("error");
       } else {
+	res.end(id+file_name);
         console.log("success!")
       }
     });
   });
 });
 
-/* Show the upload form	
+// Show the upload form	
 app.get('/uploadform', function (req, res){
  res.writeHead(200, {'Content-Type': 'text/html' });
   var form = '<form action="/upload" enctype="multipart/form-data" method="post"><input multiple="multiple" name="upload" type="file" /><br><br><input type="submit" value="Upload" /></form>';
   res.end(form); 
-});*/ 
+}); 
 
 //---------------------------------------------------
 //Directs the user to the home page
