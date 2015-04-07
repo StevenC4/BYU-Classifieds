@@ -5,7 +5,7 @@ angular.module("byu.api", [])
     $http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
     return {
         validateUser: function(username, password){
-            return $http.post("http://52.10.167.115/validateuser", {
+            return $http.post("/validateuser", {
                 "username": username,
                 "password": password
             }).success(function(data, status, headers, config){
@@ -15,22 +15,22 @@ angular.module("byu.api", [])
             });
         },
         insertUser: function(){
-            return $http.post("http://52.10.167.115/inserteuser")
+            return $http.post("/insertuser")
         },
         updateUser: function(){
-            return $http.post("http://52.10.167.115/validateuser")
+            return $http.post("/updateuser")
         },
         removeUser: function(){
-            return $http.post("http://52.10.167.115/validateuser")
+            return $http.post("/removeuser")
         },
         find: function(title){
-            return $http.post("http://52.10.167.115/find",
+            return $http.post("/find",
             {
               "Title": title
             })
         },
         getAllItems: function(){
-            return $http.get("http://52.10.167.115/get_all_items")
+            return $http.get("/get_all_items")
         },
         getItem: function(id){
             console.log(id);
@@ -40,13 +40,13 @@ angular.module("byu.api", [])
             });
         },
         getCategoryItems: function(category){
-            return $http.post("http://52.10.167.115/get_category_item",
+            return $http.post("/get_category_item",
             {
               "Category": category
             })
         },
         postItem: function(title, path, user, date, category){
-            return $http.post("http://52.10.167.115/post_item",
+            return $http.post("/post_item",
             {
               "Title": title,
               "Picture": path,
@@ -58,13 +58,13 @@ angular.module("byu.api", [])
             })
         },
         deleteItem: function(id){
-            return $http.post("http://52.10.167.115/delete_item",
+            return $http.post("/delete_item",
             {
               "ID": id
             })
         },
         comment: function(itemID, user, comment){
-            return $http.post("http://52.10.167.115/comment",
+            return $http.post("/comment",
             {
               "ID": itemID,
               "UserID": user,
@@ -72,7 +72,7 @@ angular.module("byu.api", [])
             })
         },
         removeAllItems: function(){
-            return $http.post("http://52.10.167.115/remove_all_items")
+            return $http.post("/remove_all_items")
         }
     }
 }])
