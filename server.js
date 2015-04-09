@@ -8,8 +8,94 @@ var app = express();
 var util=require('util');
 var formidable=require('formidable');
 var crypto=require('crypto');
+var cookieParser=require("cookie-parser");
+var methodOverride=require('method-override');
+var session=require('express-session');
+var mongoose=require('mongoose');
+mongoose.connect("mongodb://localhost/byu-classifieds");
+var db= mongoose.db;
+var userSchema = mongoose.Schema({
+    id: String,
+    firstName: String
+});
+var User = mongoose.model('users', userSchema);
 app.use(bodyParser.json());
+app.use(cookieParser());
+app.use(session({secret: 'blah', resave: true,
+saveUninitialized: true}));
+app.use(methodOverride());
+var passport = require('passport')
+  , FacebookStrategy = require('passport-facebook').Strategy;
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(new FacebookStrategy({
+    clientID: ################,
+    clientSecret: "################################",
+    callbackURL: "http://52.10.83.44/auth/facebook/callback"
+  },
+  function(access_token, refresh_token, profile, done) {
+   
+    process.nextTick(function() {
+   
+      // find the user in the database based on their facebook id
+      User.findOne({ 'id' : profile.id }, function(err, user) {
+ 
+        // if there is an error, stop everything and return that
+        // ie an error connecting to the database
+        if (err)
+          return done(err);
+ 
+          // if the user is found, then log them in
+          if (user) {
+            return done(null, user); // user found, return that user
+          } else {
+            // if there is no user found with that facebook id, create them
+            var newUser = new User();
+ 
+            // set all of the facebook information in our user model
+            newUser.id    = profile.id; // set the users facebook id                 
+            //newUser.access_token = access_token; // we will save the token that facebook provides to the user                    
+            newUser.firstName  = profile.name.givenName;
+ 
+            // save our user to the database
+            newUser.save(function(err) {
+              if (err)
+                throw err;
+ 
+              // if successful, return the new user
+              return done(null, newUser);
+            });
+         } 
+      });
+    });
+})
+);
+
+// Redirect the user to Facebook for authentication.  When complete,
+// Facebook will redirect the user back to the application at
+//     /auth/facebook/callback
+app.get('/auth/facebook', passport.authenticate('facebook'));
+
+// Facebook will redirect the user to this URL after approval.  Finish the
+// authentication process by attempting to obtain an access token.  If
+// access was granted, the user will be logged in.  Otherwise,
+// authentication has failed.
+app.get('/auth/facebook/callback', 
+  passport.authenticate('facebook', { successRedirect: '/#/profile/',
+                                      failureRedirect: '/#/404' }));
+
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+ 
+passport.deserializeUser(function(obj, done) {
+  done(null, obj);
+});
+
 http.createServer(app).listen(80);
+
 app.use('/', express.static('./html', {maxAge: 60*60*1000}));
 
 app.use(qt.static(__dirname + '/'));
@@ -53,6 +139,12 @@ app.get('/uploadform', function (req, res){
 app.get('/', function (req, res) {
     res.sendFile('template.html', {root: './html/'});
 });
+
+
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {return next(); }
+  res.redirect('/auth/facebook')
+}
 
 //Takes a json template containing attributes we are looking for and returns user json if is valid or "-1" if invalid
 app.post('/validateuser', function(req,res){
