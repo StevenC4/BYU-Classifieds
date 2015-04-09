@@ -17,7 +17,9 @@ mongoose.connect("mongodb://localhost/byu-classifieds");
 var db= mongoose.db;
 var userSchema = mongoose.Schema({
     id: String,
-    firstName: String
+    name: String,
+    photoURL: String,
+    
 });
 var User = mongoose.model('users', userSchema);
 app.use(bodyParser.json());
@@ -32,14 +34,15 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 passport.use(new FacebookStrategy({
-    clientID: ################,
-    clientSecret: "################################",
-    callbackURL: "http://52.10.83.44/auth/facebook/callback"
+    clientID: #,
+    clientSecret: "#",
+    callbackURL: "http://52.10.83.44/auth/facebook/callback",
+    profileFields: ['id', 'photos', 'emails', 'displayName']
   },
   function(access_token, refresh_token, profile, done) {
    
     process.nextTick(function() {
-   
+      console.log(profile); 
       // find the user in the database based on their facebook id
       User.findOne({ 'id' : profile.id }, function(err, user) {
  
@@ -58,8 +61,8 @@ passport.use(new FacebookStrategy({
             // set all of the facebook information in our user model
             newUser.id    = profile.id; // set the users facebook id                 
             //newUser.access_token = access_token; // we will save the token that facebook provides to the user                    
-            newUser.firstName  = profile.name.givenName;
- 
+            newUser.name  = profile.displayName;
+            newUser.photoURL=profile.photos[0].value;
             // save our user to the database
             newUser.save(function(err) {
               if (err)
@@ -73,6 +76,11 @@ passport.use(new FacebookStrategy({
     });
 })
 );
+
+app.get('/logout', function(req, res){
+  req.logout();
+  res.redirect('/');
+});
 
 // Redirect the user to Facebook for authentication.  When complete,
 // Facebook will redirect the user back to the application at
