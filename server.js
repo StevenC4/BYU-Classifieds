@@ -8,6 +8,7 @@ var app = express();
 var util=require('util');
 var formidable=require('formidable');
 var crypto=require('crypto');
+/*
 var cookieParser=require("cookie-parser");
 var methodOverride=require('method-override');
 var session=require('express-session');
@@ -94,6 +95,11 @@ passport.deserializeUser(function(obj, done) {
   done(null, obj);
 });
 
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {return next(); }
+  res.redirect('/auth/facebook')
+}
+*/
 http.createServer(app).listen(80);
 
 app.use('/', express.static('./html', {maxAge: 60*60*1000}));
@@ -107,11 +113,9 @@ app.post('/upload', function (req, res){
   });
 
   form.on('end', function(fields, files) {
-    /* Temporary location of our uploaded file */
     var temp_path = this.openedFiles[0].path;
-    /* The file name of the uploaded file */
     var file_name = this.openedFiles[0].name;
-    /* Location where we want to copy the uploaded file */
+    
     var new_location = 'uploads/';
     var id = crypto.randomBytes(20).toString('hex');
     fs.copy(temp_path, new_location + id + file_name, function(err) {  
@@ -141,10 +145,7 @@ app.get('/', function (req, res) {
 });
 
 
-function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {return next(); }
-  res.redirect('/auth/facebook')
-}
+
 
 //Takes a json template containing attributes we are looking for and returns user json if is valid or "-1" if invalid
 app.post('/validateuser', function(req,res){
