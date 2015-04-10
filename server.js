@@ -8,7 +8,6 @@ var app = express();
 var util=require('util');
 var formidable=require('formidable');
 var crypto=require('crypto');
-/*
 var LocalStrategy = require('passport-local').Strategy;
 var cookieParser=require("cookie-parser");
 var methodOverride=require('method-override');
@@ -27,7 +26,7 @@ var userSchema = mongoose.Schema({
     email: String,
     fb: Boolean
 });
-userschema.methods.validPassword=function(pwd){
+userSchema.methods.validPassword=function(pwd){
     return (this.password===pwd);
 };
 var User = mongoose.model('users', userSchema);
@@ -90,7 +89,7 @@ passport.use(new FacebookStrategy({
 app.post('/login',
   passport.authenticate('local', { successRedirect: '/#/profile/',
                                    failureRedirect: '/#/404',
-                                   failureFlash: true })
+     					failureFlash: false})
 );
 
 passport.use(new LocalStrategy(
@@ -142,7 +141,7 @@ function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {return next(); }
   res.redirect('/auth/facebook')
 }
-*/
+
 http.createServer(app).listen(80);
 
 app.use('/', express.static('./html', {maxAge: 60*60*1000}));
