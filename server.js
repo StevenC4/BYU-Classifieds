@@ -27,6 +27,9 @@ var userSchema = mongoose.Schema({
     email: String,
     fb: Boolean
 });
+userschema.methods.validPassword=function(pwd){
+    return (this.password===pwd);
+});
 var User = mongoose.model('users', userSchema);
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -99,7 +102,7 @@ passport.use(new LocalStrategy(
       }
       if(user.fb)
       {
-	return done(null, false, { message: 'Must use facebook'});
+	   return done(null, false, { message: 'Must use facebook'});
       }
       if (!user.validPassword(password)) {
         return done(null, false, { message: 'Incorrect password.' });
