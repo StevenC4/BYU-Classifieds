@@ -9,6 +9,7 @@ var util=require('util');
 var formidable=require('formidable');
 var crypto=require('crypto');
 /*
+var LocalStrategy = require('passport-local').Strategy;
 var cookieParser=require("cookie-parser");
 var methodOverride=require('method-override');
 var session=require('express-session');
@@ -16,10 +17,15 @@ var mongoose=require('mongoose');
 mongoose.connect("mongodb://localhost/byu-classifieds");
 var db= mongoose.db;
 var userSchema = mongoose.Schema({
-    id: String,
-    name: String,
-    photoURL: String,
-    
+    username: String,
+    password: String,
+    firstname: String,
+    lastname: String,
+    address: [],
+    phoneNumbers: [],
+    ads: [],
+    email: String,
+    fb: Boolean
 });
 var User = mongoose.model('users', userSchema);
 app.use(bodyParser.json());
@@ -34,10 +40,10 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 passport.use(new FacebookStrategy({
-    clientID: #,
-    clientSecret: "#",
+    clientID: 12345678910,
+    clientSecret: "a",
     callbackURL: "http://52.10.83.44/auth/facebook/callback",
-    profileFields: ['id', 'photos', 'emails', 'displayName']
+    profileFields: ['id', 'emails', 'displayName', 'name']
   },
   function(access_token, refresh_token, profile, done) {
    
@@ -59,10 +65,11 @@ passport.use(new FacebookStrategy({
             var newUser = new User();
  
             // set all of the facebook information in our user model
-            newUser.id    = profile.id; // set the users facebook id                 
-            //newUser.access_token = access_token; // we will save the token that facebook provides to the user                    
-            newUser.name  = profile.displayName;
-            newUser.photoURL=profile.photos[0].value;
+            newUser.username    = profile.id; // set the users username                 
+                               
+            newUser.firstname=profile.name.givenName;
+	    newUser.lastname=profile.name.familyName;
+	    newUser.fb=true;
             // save our user to the database
             newUser.save(function(err) {
               if (err)
@@ -76,6 +83,31 @@ passport.use(new FacebookStrategy({
     });
 })
 );
+
+app.post('/login',
+  passport.authenticate('local', { successRedirect: '/#/profile/',
+                                   failureRedirect: '/#/404',
+                                   failureFlash: true })
+);
+
+passport.use(new LocalStrategy(
+  function(username, password, done) {
+    User.findOne({ username: username }, function(err, user) {
+      if (err) { return done(err); }
+      if (!user) {
+        return done(null, false, { message: 'Incorrect username.' });
+      }
+      if(user.fb)
+      {
+	return done(null, false, { message: 'Must use facebook'});
+      }
+      if (!user.validPassword(password)) {
+        return done(null, false, { message: 'Incorrect password.' });
+      }
+      return done(null, user);
+    });
+  }
+));
 
 app.get('/logout', function(req, res){
   req.logout();
