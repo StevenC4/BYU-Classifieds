@@ -86,6 +86,9 @@ passport.use(new FacebookStrategy({
 })
 );
 
+//if login is called with username and password, it will redirect to success if auth is successful
+//or it will redirect to failureRedirect if auth is a failure
+//failuerFlash will flash a warning if it is set to True and the page is configured right
 app.post('/login',
   passport.authenticate('local', { successRedirect: '/#/profile/',
                                    failureRedirect: '/#/404',
@@ -99,20 +102,20 @@ passport.use(new LocalStrategy(
       if (!user) {
         return done(null, false, { message: 'Incorrect username.' });
       }
-      if(user.fb)
+      if(user.fb) //the user was created through fb
       {
 	   return done(null, false, { message: 'Must use facebook'});
       }
       if (!user.validPassword(password)) {
         return done(null, false, { message: 'Incorrect password.' });
       }
-      return done(null, user);
+      return done(null, user); //the user is legit
     });
   }
 ));
 
 app.get('/logout', function(req, res){
-  req.logout();
+  req.logout(); //kills the cookie
   res.redirect('/');
 });
 
@@ -137,9 +140,11 @@ passport.deserializeUser(function(obj, done) {
   done(null, obj);
 });
 
+//Can use this function as middleware for any protected endpoints
+//Can also change the redirect to point to whatever page when user is not logged in
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {return next(); }
-  res.redirect('/auth/facebook')
+  res.redirect('/#/login')
 }
 
 http.createServer(app).listen(80);
