@@ -29,7 +29,7 @@ var userSchema = mongoose.Schema({
 });
 userschema.methods.validPassword=function(pwd){
     return (this.password===pwd);
-});
+};
 var User = mongoose.model('users', userSchema);
 app.use(bodyParser.json());
 app.use(cookieParser());
