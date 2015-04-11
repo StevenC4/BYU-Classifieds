@@ -48,8 +48,8 @@ angular.module('app', ['ui.router', 'byu.controllers'])
         resolve:{
             category:function($stateParams){return $stateParams.category}
         },
-        templateUrl: '',
-        controller: "",
+        templateUrl: '/partials/view_category.html',
+        controller: "viewCategory",
         title: 'View Category'
     });
 

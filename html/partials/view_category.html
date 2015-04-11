@@ -1,0 +1,12 @@
+<div ng-if="loaded" class="container">
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th><h4><u>{{category}} </u></h4></th>
+            </tr>
+        </thead>
+        <tr ng-repeat="item in categoryItems track by $index">
+            <td style="cursor: pointer">{{item.Title}}</td>
+        </tr>
+    </table>
+</div>

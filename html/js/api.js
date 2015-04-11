@@ -67,10 +67,11 @@ angular.module("byu.api", [])
             });
         },
         getCategoryItems: function(category){
-            return $http.post("/get_category_item",
+            return $http.post("/get_category_items",
             {
               "Category": category
-            }).success(function(result){
+            }).success(function (result) {
+                console.log("\nSuccess! Returned: " + JSON.stringify(result, null, 2));
                 return result;
             }).error(function(result){
                 return result;

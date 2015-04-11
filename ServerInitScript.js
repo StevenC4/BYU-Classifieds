@@ -1,6 +1,9 @@
 ﻿var conn = new Mongo();
 var db = conn.getDB("byu-classifieds");
 
+db.users.drop();
+db.ads.drop();
+
 var usersToInsert = [{
         "username": "sean",
         "firstName": "Sean",
@@ -70,54 +73,54 @@ db.users.insert(usersToInsert);
 
 var adsToInsert = [
     {
-        "title": "Crappy Laptop",
-        "userID": db.users.findOne({ 'username': 'sean' })._id,
-        "postDate": Date(),
-        "category": "Computers",
-        "bought": 0,
-        "comments": [
+        "Title": "Crappy Laptop",
+        "UserID": db.users.findOne({ 'username': 'sean' })._id,
+        "PostDate": Date(),
+        "Category": "Computers",
+        "Bought": 0,
+        "Comments": [
             {
-                "userID": db.users.findOne({ 'username': 'steve' })._id,
-                "text" : "This is literally the worst laptop I have ever seen."
+                "UserID": db.users.findOne({ 'username': 'steve' })._id,
+                "Text" : "This is literally the worst laptop I have ever seen."
             }
         ]
     },
     {
-        "title": "Lamp",
-        "userID": db.users.findOne({ 'username': 'steve' })._id,
-        "postDate": Date(),
-        "category": "Furniture",
-        "bought": 0,
-        "comments": [
+        "Title": "Lamp",
+        "UserID": db.users.findOne({ 'username': 'steve' })._id,
+        "PostDate": Date(),
+        "Category": "Furniture",
+        "Bought": 0,
+        "Comments": [
             {
-                "userID": db.users.findOne({ 'username': 'michael' })._id,
-                "text": "I love lamp."
+                "UserID": db.users.findOne({ 'username': 'michael' })._id,
+                "Text": "I love lamp."
             }
         ]
     },
     {
-        "title": "CS 360 Textbook",
-        "userID": db.users.findOne({ 'username': 'scott' })._id,
-        "postDate": Date(),
-        "category": "Textbooks",
-        "bought": 0,
-        "comments": [
+        "Title": "CS 360 Textbook",
+        "UserID": db.users.findOne({ 'username': 'scott' })._id,
+        "PostDate": Date(),
+        "Category": "Textbooks",
+        "Bought": 0,
+        "Comments": [
             {
-                "userID": db.users.findOne({ 'username': 'sean' })._id,
-                "text": "If we fail the course, you might still need this."
+                "UserID": db.users.findOne({ 'username': 'sean' })._id,
+                "Text": "If we fail the course, you might still need this."
             }
         ]
     },
     {
-        "title": "Snowboard",
-        "userID": db.users.findOne({ 'username': 'michael' })._id,
-        "postDate": Date(),
-        "category": "Sport Gear",
-        "bought": 0,
-        "comments": [
+        "Title": "Snowboard",
+        "UserID": db.users.findOne({ 'username': 'michael' })._id,
+        "PostDate": Date(),
+        "Category": "Sport Gear",
+        "Bought": 0,
+        "Comments": [
             {
-                "userID": db.users.findOne({ 'username': 'scott' })._id,
-                "text": "Wicked board, bro!"
+                "UserID": db.users.findOne({ 'username': 'scott' })._id,
+                "Text": "Wicked board, bro!"
             }
         ]
     }
