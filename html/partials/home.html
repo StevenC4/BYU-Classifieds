@@ -3,7 +3,7 @@
     <div>
         <table class="table table-bordered table-hover">
             <thead><tr><th><h4><u>Categories</u></h4></th></tr></thead>
-            <tr><td style="cursor: pointer">All</td></tr>
+           <!--<tr><td style="cursor: pointer">All</td></tr>-->
             <tr ng-repeat="category in categories track by $index">
                 <td style="cursor: pointer">
                     <a ui-sref="viewCategory({ category: category.name})">

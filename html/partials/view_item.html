@@ -1,3 +1,12 @@
-<div ng-if="loaded">
+<div ng-if="loaded" class="container">
   <h2>{{item.Title}}</h2>
+    <table>
+        <tr>
+            <td>Date Posted</td><td>{{item.PostDate}}</td>
+        </tr>
+        <tr><th>Comments</th></tr>
+        <tr ng-repeat="comment in item.Comments">
+            <td>"{{comment.Text}}"</td>
+        </tr>
+    </table>
 </div>

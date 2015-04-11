@@ -6,7 +6,11 @@
             </tr>
         </thead>
         <tr ng-repeat="item in categoryItems track by $index">
-            <td style="cursor: pointer">{{item.Title}}</td>
+            <td style="cursor: pointer">
+                <a ui-sref="viewItem( { itemID: item._id })">
+                    {{item.Title}}
+                </a>
+            </td>
         </tr>
     </table>
 </div>
