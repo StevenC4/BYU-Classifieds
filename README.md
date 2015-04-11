@@ -24,9 +24,16 @@ User Schema:
 
 Ad Item Schema:
 
-* title = Name of the ad
 * userID = ID of the user that posted the item
+* title = Name of the ad
 * postDate = Date of when the item was posted
 * category = Chosen category of the item
 * bought = Boolean of whether it was bought or sold
 * comments = List of comment objects of userID and comment
+
+---
+
+Comment Schema:
+
+* userID = ID of the user that posted the item
+* text = Text of the Comment
