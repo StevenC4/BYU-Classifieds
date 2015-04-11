@@ -7,7 +7,6 @@ BYU classifieds page for CS360 project.
 User Schema:
 
 * username
-// * passwordHash
 * firstName
 * lastName
 * address : {
@@ -20,15 +19,12 @@ User Schema:
       number:
   }
 * email
-// * image
-* ads : []
 
 ---
 
 Ad Item Schema:
 
 * title = Name of the ad
-// * image = picture of the item
 * userID = ID of the user that posted the item
 * postDate = Date of when the item was posted
 * category = Chosen category of the item
