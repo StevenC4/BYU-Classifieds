@@ -76,32 +76,50 @@ var adsToInsert = [
         "category": "Computers",
         "bought": 0,
         "comments": [
-            { }
+            {
+                "userID": db.users.findOne({ 'username': 'steve' })._id,
+                "text" : "This is literally the worst laptop I have ever seen."
+            }
         ]
     },
     {
-        "title": "something awesome2",
-        "userID": db.users.findOne({ 'username': 'sean' })._id,
-        "postDate": "",
-        "category": "",
+        "title": "Lamp",
+        "userID": db.users.findOne({ 'username': 'steve' })._id,
+        "postDate": Date(),
+        "category": "Furniture",
         "bought": 0,
-        "comments": []
+        "comments": [
+            {
+                "userID": db.users.findOne({ 'username': 'michael' })._id,
+                "text": "I love lamp."
+            }
+        ]
     },
     {
-        "title": "something awesome3",
-        "userID": db.users.findOne({ 'username': 'sean' })._id,
-        "postDate": "",
-        "category": "",
-        "bought": 0,
-        "comments": []
-    },
-    {
-        "title": "something awesome4",
+        "title": "CS 360 Textbook",
         "userID": db.users.findOne({ 'username': 'scott' })._id,
-        "postDate": "",
-        "category": "",
+        "postDate": Date(),
+        "category": "Textbooks",
         "bought": 0,
-        "comments": []
+        "comments": [
+            {
+                "userID": db.users.findOne({ 'username': 'sean' })._id,
+                "text": "If we fail the course, you might still need this."
+            }
+        ]
+    },
+    {
+        "title": "Snowboard",
+        "userID": db.users.findOne({ 'username': 'michael' })._id,
+        "postDate": Date(),
+        "category": "Sport Gear",
+        "bought": 0,
+        "comments": [
+            {
+                "userID": db.users.findOne({ 'username': 'scott' })._id,
+                "text": "Wicked board, bro!"
+            }
+        ]
     }
 ];
 db.ads.insert(adsToInsert);
