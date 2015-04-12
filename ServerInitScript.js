@@ -1,4 +1,6 @@
-﻿var conn = new Mongo();
+// Template for Generating the Bulk of this data can be found here: http://beta.json-generator.com/LGXfdOm
+
+var conn = new Mongo();
 var db = conn.getDB("byu-classifieds");
 
 // Returns a random integer between min (included) and max (excluded)
