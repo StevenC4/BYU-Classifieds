@@ -18,8 +18,8 @@ var db= mongoose.db;
 var userSchema = mongoose.Schema({
     username: String,
     password: String,
-    firstname: String,
-    lastname: String,
+    first_name: String,
+    last_name: String,
     address: [],
     phoneNumbers: [],
     ads: [],
@@ -42,8 +42,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 passport.use(new FacebookStrategy({
-    clientID: 12345678910,
-    clientSecret: "a",
+    clientID: 123,
+    clientSecret: "abc",
     callbackURL: "http://52.10.83.44/auth/facebook/callback",
     profileFields: ['id', 'emails', 'displayName', 'name']
   },
@@ -52,7 +52,7 @@ passport.use(new FacebookStrategy({
     process.nextTick(function() {
       console.log(profile); 
       // find the user in the database based on their facebook id
-      User.findOne({ 'id' : profile.id }, function(err, user) {
+      User.findOne({ 'username' : profile.id }, function(err, user) {
  
         // if there is an error, stop everything and return that
         // ie an error connecting to the database
@@ -67,10 +67,10 @@ passport.use(new FacebookStrategy({
             var newUser = new User();
  
             // set all of the facebook information in our user model
-            newUser.username    = profile.id; // set the users username                 
+            newUser.username    = profile.id.toString(); // set the users username                 
                                
-            newUser.firstname=profile.name.givenName;
-	    newUser.lastname=profile.name.familyName;
+            newUser.first_name=profile.name.givenName;
+	    newUser.last_name=profile.name.familyName;
 	    newUser.fb=true;
             // save our user to the database
             newUser.save(function(err) {
@@ -113,6 +113,12 @@ passport.use(new LocalStrategy(
     });
   }
 ));
+
+app.get('/test', ensureAuthenticated, function(req,res){
+res.status(200);
+console.log(req.user);
+res.end();
+});
 
 app.get('/logout', function(req, res){
   req.logout(); //kills the cookie
