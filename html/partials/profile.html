@@ -5,27 +5,27 @@
         <table class="table table-fluid table-striped table-condensed center personal-information">
             <tr>
                 <td>Username:</td>
-                <td>{{username}}</td>
+                <td>{{user.username}}</td>
             </tr>
-            <tr>
+            <!--<tr>
                 <td>Password:</td>
                 <td><button>Change</button></td>
-            </tr>
+            </tr>-->
             <tr>
                 <td>First Name:</td>
-                <td><input type="text" value="{{first_name}}"/></td>
+                <td><input type="text" value="{{user.first_name}}"/></td>
             </tr>
             <tr>
                 <td>Last Name:</td>
-                <td><input type="text" value="{{last_name}}"/></td>
+                <td><input type="text" value="{{user.last_name}}"/></td>
             </tr>
             <tr>
                 <td>Address:</td>
-                <td><input type="text" value="{{street}}"/></td>
+                <td><input type="text" value="{{user.address.street}}"/></td>
             </tr>
             <tr>
                 <td>City:</td>
-                <td><input type="text" value="{{city}}"/></td>
+                <td><input type="text" value="{{user.address.city}}"/></td>
             </tr>
             <tr>
                 <td>State:</td>
@@ -88,11 +88,11 @@
             </tr>
             <tr>
                 <td>Zip:</td>
-                <td><input type="number" value="{{zip}}"/></td>
+                <td><input type="number" value="{{user.address.zip}}"/></td>
             </tr>
             <tr>
                 <td>Phone number:</td>
-                <td><input type="tel" value="{{phone_number}}"/></td>
+                <td><input type="tel" value="{{user.phone_number.number}}"/></td>
             </tr>
             <tr>
                 <td>Phone type:</td>
@@ -107,7 +107,7 @@
             </tr>
             <tr>
                 <td>Email:</td>
-                <td><input type="email" value="{{email}}"/></td>
+                <td><input type="email" value="{{user.email}}"/></td>
             </tr>
             <tr>
                 <td>Image:</td>
