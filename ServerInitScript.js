@@ -14,7 +14,7 @@ function getRandomInt(min, max) {
     return names[getRandomInt(0,4)];
 }
 
-db.users.findOne({ 'username': getRandomUser() })._id;
+//db.users.findOne({ 'username': getRandomUser() })._id;
 
 
 db.users.drop();
