@@ -232,7 +232,7 @@ app.post('/insertuser', function(req,res){
                 {
                     db.collection("users").insert(jsonData, function(err,records){});
                     res.writeHead(200);
-                    res.end();
+                    res.end("created");
                 }
                 else
                 {
@@ -241,6 +241,28 @@ app.post('/insertuser', function(req,res){
                 }
             });
         });
+    });
+});
+
+app.get('/getuser', function(req, res){
+    var jsonData = '';
+    req.on('data', function(chunk){jsonData += chunk});
+    req.on('end', function(){
+        jsonData=JSON.parse(jsonData);
+        var MongoClient = require('mongodb').MongoClient;
+        MongoClient.connect("mongodb://localhost/byu-classifieds", function(err, db){
+            if (err)
+                throw err;
+            db.collection("users").findOne({_id: jsonData.id}, function(err, record){
+                if (!record) {
+                    res.writeHead(200);
+                    res.end(-1);
+                } else {
+                    res.writeHead(200);
+                    res.end(record);
+                }
+            })
+        })
     });
 });
 

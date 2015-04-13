@@ -1,35 +1,35 @@
 <h1 class="text-center">Sign up for BYU Classifieds!</h1>
 <div class="well personal-information">
     <h2 class="text-center">Please provide the following information</h2>
-    <form>
+    <form ng-submit="registerUser()">
         <table class="table table-fluid table-striped table-condensed center personal-information">
             <tr>
                 <td>Username:</td>
-                <td><input type="text"/></td>
+                <td><input type="text" ng-model="username"/></td>
             </tr>
             <tr>
                 <td>Password:</td>
-                <td><input type="password"/></td>
+                <td><input type="password" ng-model="password"/></td>
             </tr>
             <tr>
                 <td>Confirm Password:</td>
-                <td><input type="password"/></td>
+                <td><input type="password" ng-model="password_confirm"/></td>
             </tr>
             <tr>
                 <td>First Name:</td>
-                <td><input type="text"/></td>
+                <td><input type="text" ng-model="first_name"/></td>
             </tr>
             <tr>
                 <td>Last Name:</td>
-                <td><input type="text"/></td>
+                <td><input type="text" ng-model="last_name"/></td>
             </tr>
             <tr>
                 <td>Address:</td>
-                <td><input type="text"/></td>
+                <td><input type="text" ng-model="address"/></td>
             </tr>
             <tr>
                 <td>City:</td>
-                <td><input type="text"/></td>
+                <td><input type="text" ng-model="city"/></td>
             </tr>
             <tr>
                 <td>State:</td>
@@ -92,11 +92,11 @@
             </tr>
             <tr>
                 <td>Zip:</td>
-                <td><input type="number"/></td>
+                <td><input type="number" ng-model="zip"/></td>
             </tr>
             <tr>
                 <td>Phone number:</td>
-                <td><input type="tel"/></td>
+                <td><input type="tel" ng-model="phone_number"/></td>
             </tr>
             <tr>
                 <td>Phone type:</td>
@@ -111,7 +111,7 @@
             </tr>
             <tr>
                 <td>Email:</td>
-                <td><input type="email"/></td>
+                <td><input type="email" ng-model="email"/></td>
             </tr>
             <tr>
                 <td>Image:</td>

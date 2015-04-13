@@ -14,8 +14,16 @@ angular.module("byu.api", [])
                 return result;
             });
         },
-        insertUser: function(){
-            return $http.post("/insertuser"
+        getUser: function(userId) {
+            return $http.post("/getuser", userId
+            ).success(function(result){
+                return result;
+            }).error(function(result){
+                return result;
+            });
+        },
+        insertUser: function(userInfo){
+            return $http.post("/insertuser", userInfo
             ).success(function(result){
                 return result;
             }).error(function(result){
