@@ -1,7 +1,7 @@
-angular.module("byu.controllers.user", ["byu.api"])
+angular.module("byu.controllers.user", ["byu.api", "byu.usercookie"])
 
-    .controller("user", ['$scope', 'serverCalls', '$state', '$stateParams', function($scope, serverCalls, $state, $stateParams){
-        $scope.user = null;
+    .controller("user", ['$scope', 'serverCalls', '$state', '$stateParams', 'userCookie', function($scope, serverCalls, $state, $stateParams, userCookie){
+        $scope.user = userCookie.getUser();
         $scope.username = "";
         $scope.password = "";
         $scope.password_confirm = "";
@@ -14,6 +14,8 @@ angular.module("byu.controllers.user", ["byu.api"])
         $scope.phone_number = "";
         $scope.phone_type = "";
         $scope.email = "";
+
+        console.log($scope.user);
 
         $scope.validateUser = function() {
             var response = serverCalls.validateUser($scope.username, $scope.password);
@@ -60,6 +62,11 @@ angular.module("byu.controllers.user", ["byu.api"])
             });
             response.then(function(result){
                 console.log(result.data);
+                if (result == "created") {
+                    $state.go('profile');
+                } else {
+                    alert('That user already exists');
+                }
             });
         };
 

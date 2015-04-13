@@ -213,10 +213,12 @@ app.post('/validateuser', function(req,res){
                 if(err) throw err;
                 users.findOne(jsonData,function(err, items){
                     res.status(200);
-                    if(items)
+                    if(items){
+                        res.cookie('user', JSON.stringify(items));
                         res.end(JSON.stringify(items));
-                    else
+                    } else {
                         res.end("-1");
+                    }
                 });
             });
         });
