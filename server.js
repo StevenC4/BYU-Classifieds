@@ -438,18 +438,34 @@ app.post('/get_category_items', function (req, res) {
 });
 
 app.post('/get_user_items', function(req, res) {
-   var jsonData = '';
+    var jsonData = '';
     req.on('data', function(chunk){jsonData += chunk;});
     req.on('end', function(){
-       console.log("\nGet items by user, JSON Request:\n" + jsonData);
         jsonData = JSON.parse(jsonData);
+        var ObjectId = require('mongodb').ObjectID;
         var MongoClient = require('mongodb').MongoClient;
+        console.log("\nGet items by user, JSON Request:\n" + ObjectId(jsonData.UserID));
         MongoClient.connect("mongodb://localhost/byu-classifieds", function(err, db) {
             if (err) throw err;
             db.collection("ads", function(err, ads){
-               res.writeHead(500);
-                res.end("Error");
+                if (err) {
+                    res.writeHead(500);
+                    res.end("Error");
+                }
+                console.log({UserID: ObjectId(jsonData.UserID)});
+                ads.find({"UserID": ObjectId(jsonData.UserID)}, function(err, items){
+                    if (err) {
+                        res.writeHead(500);
+                        res.end('Error');
+                    }
+                    console.log("Document Array: ");
+                    console.log(items);
+                    res.writeHead(200);
+                    res.end(JSON.stringify(items));
+                    res.end(JSON.stringify(items));
+                });
             });
+
         });
     });
 });

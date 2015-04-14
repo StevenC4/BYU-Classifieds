@@ -85,6 +85,17 @@ angular.module("byu.api", [])
                 return result;
             });
         },
+        getUserItems: function(userId) {
+            return $http.post("/get_user_items",
+                {
+                    "UserID": userId
+                }).success(function(result){
+                    console.log("\nSuccess! Returned: " + JSON.stringify(result, null, 2));
+                    return result;
+                }).error(function(result){
+                    return result;
+                });
+        },
         postItem: function(title, path, user, date, category){
             return $http.post("/post_item",
             {

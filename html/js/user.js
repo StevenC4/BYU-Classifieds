@@ -1,7 +1,7 @@
 angular.module("byu.controllers.user", ["byu.api", "byu.usercookie"])
-
     .controller("user", ['$scope', 'serverCalls', '$state', '$stateParams', 'userCookie', function($scope, serverCalls, $state, $stateParams, userCookie){
         $scope.user = userCookie.getUser();
+        //$scope.items = ($scope.user !== null ? serverCalls.getUserItems($scope.user._id) : null);
         $scope.items = null;
 
         console.log($scope.items);
@@ -33,5 +33,6 @@ angular.module("byu.controllers.user", ["byu.api", "byu.usercookie"])
 
         $scope.getUserData = function() {
 
-        }
+        };
     }]);
+
