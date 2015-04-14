@@ -2,6 +2,9 @@ angular.module("byu.controllers.user", ["byu.api", "byu.usercookie"])
 
     .controller("user", ['$scope', 'serverCalls', '$state', '$stateParams', 'userCookie', function($scope, serverCalls, $state, $stateParams, userCookie){
         $scope.user = userCookie.getUser();
+        $scope.items = null;
+
+        console.log($scope.items);
 
         $scope.validateUser = function() {
             var response = serverCalls.validateUser($scope.username, $scope.password);

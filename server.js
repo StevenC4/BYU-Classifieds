@@ -437,6 +437,23 @@ app.post('/get_category_items', function (req, res) {
     });
 });
 
+app.post('/get_user_items', function(req, res) {
+   var jsonData = '';
+    req.on('data', function(chunk){jsonData += chunk;});
+    req.on('end', function(){
+       console.log("\nGet items by user, JSON Request:\n" + jsonData);
+        jsonData = JSON.parse(jsonData);
+        var MongoClient = require('mongodb').MongoClient;
+        MongoClient.connect("mongodb://localhost/byu-classifieds", function(err, db) {
+            if (err) throw err;
+            db.collection("ads", function(err, ads){
+               res.writeHead(500);
+                res.end("Error");
+            });
+        });
+    });
+});
+
 //---------------------------------------------------
 //Post Item
 //
