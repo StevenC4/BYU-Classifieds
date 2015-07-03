@@ -379,7 +379,9 @@ app.post('/get_category_items', function (req, res) {
     var jsonData='';
     req.on('data', function(chunk){jsonData+=chunk;});
     req.on('end', function () {
-        jsonData=JSON.parse(jsonData);
+        console.log("\nGet Category Items, JSON Request:\n" + jsonData);
+        jsonData =JSON.parse(jsonData);
+        console.log("\nGet Category Items, Parsed JSON:\n" + JSON.stringify(jsonData, null, 2));
         var MongoClient = require('mongodb').MongoClient;
         MongoClient.connect("mongodb://localhost/byu-classifieds", function(err, db) {
             if(err) throw err;

@@ -1,6 +1,9 @@
 ﻿var conn = new Mongo();
 var db = conn.getDB("byu-classifieds");
 
+db.users.drop();
+db.ads.drop();
+
 var usersToInsert = [{
         "username": "sean",
         "firstName": "Sean",
