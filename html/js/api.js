@@ -14,8 +14,16 @@ angular.module("byu.api", [])
                 return result;
             });
         },
-        insertUser: function(){
-            return $http.post("/insertuser"
+        getUser: function(userId) {
+            return $http.post("/getuser", userId
+            ).success(function(result){
+                return result;
+            }).error(function(result){
+                return result;
+            });
+        },
+        insertUser: function(userInfo){
+            return $http.post("/insertuser", userInfo
             ).success(function(result){
                 return result;
             }).error(function(result){
@@ -67,14 +75,26 @@ angular.module("byu.api", [])
             });
         },
         getCategoryItems: function(category){
-            return $http.post("/get_category_item",
+            return $http.post("/get_category_items",
             {
               "Category": category
-            }).success(function(result){
+            }).success(function (result) {
+                console.log("\nSuccess! Returned: " + JSON.stringify(result, null, 2));
                 return result;
             }).error(function(result){
                 return result;
             });
+        },
+        getUserItems: function(userId) {
+            return $http.post("/get_user_items",
+                {
+                    "UserID": userId
+                }).success(function(result){
+                    console.log("\nSuccess! Returned: " + JSON.stringify(result, null, 2));
+                    return result;
+                }).error(function(result){
+                    return result;
+                });
         },
         postItem: function(title, path, user, date, category){
             return $http.post("/post_item",

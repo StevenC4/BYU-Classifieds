@@ -2,11 +2,23 @@
     <table class="table table-bordered table-hover">
         <thead>
             <tr>
+<<<<<<< HEAD
                 <th><h4><u>{{category}} + " Items"</u></h4></th>
             </tr>
         </thead>
         <tr ng-repeat="item in categoryItems track by $index">
             <td style="cursor: pointer">{{item.title}}</td>
+=======
+                <th><h4><u>{{category}} </u></h4></th>
+            </tr>
+        </thead>
+        <tr ng-repeat="item in categoryItems track by $index">
+            <td style="cursor: pointer">
+                <a ui-sref="viewItem( { itemID: item._id })">
+                    {{item.Title}}
+                </a>
+            </td>
+>>>>>>> origin/master
         </tr>
     </table>
 </div>

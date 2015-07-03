@@ -1,3 +1,31 @@
-<div ng-if="loaded">
+<div ng-if="loaded" class="container">
   <h2>{{item.Title}}</h2>
+    <table>
+        <tr>
+            <td>Date Posted</td><td>{{item.PostDate}}</td>
+        </tr>
+        <tr>
+          <th>Comments</th>
+          <th>
+            <button class="btn btn-default" ng-click="showCommentForm()">
+              Add Comment
+            </button>
+          </th>
+        </tr>
+        <tr ng-show="showAddComment">
+          <td>
+            <form name="commentForm">
+              <div class="form-group">
+                <label for="tbComment">Comment:</label>
+                <input type="text" class="form-control" id="tbComment" placeholder="Enter comment">
+              </div>
+              <button ng-submit="submitComment(commentForm)" class="btn btn-default">Submit</button>
+              <button ng-click="closeCommentForm()" class="btn btn-default">Cancel</button>
+            </form>
+          </td>
+        </tr>
+        <tr ng-repeat="comment in item.Comments">
+            <td>"{{comment.Text}}"</td>
+        </tr>
+    </table>
 </div>

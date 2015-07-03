@@ -2,6 +2,7 @@
 <div class="container">
     <div>
         <table class="table table-bordered table-hover">
+<<<<<<< HEAD
             <thead>
                 <tr>
                     <th><h4><u>Categories</u></h4></th>
@@ -10,6 +11,16 @@
             <tr><td style="cursor: pointer">All</td></tr>
             <tr ng-repeat="category in categories track by $index">
                 <td style="cursor: pointer">{{category.name}}</td>
+=======
+            <thead><tr><th><h4><u>Categories</u></h4></th></tr></thead>
+           <!--<tr><td style="cursor: pointer">All</td></tr>-->
+            <tr ng-repeat="category in categories track by $index">
+                <td style="cursor: pointer">
+                    <a ui-sref="viewCategory({ category: category.name})">
+                        {{category.name}}
+                    </a>
+                </td>
+>>>>>>> origin/master
             </tr>
         </table>
     </div>

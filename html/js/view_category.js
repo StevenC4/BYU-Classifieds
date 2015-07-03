@@ -5,6 +5,10 @@
     serverCalls.getCategoryItems($stateParams.category).then(function (result) {
         console.log(result.data);
         $scope.categoryItems = result.data;
+<<<<<<< HEAD
+=======
+        $scope.category = $stateParams.category;
+>>>>>>> origin/master
         $scope.loaded = true;
     });
 }])

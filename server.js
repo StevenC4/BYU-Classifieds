@@ -18,8 +18,8 @@ var db= mongoose.db;
 var userSchema = mongoose.Schema({
     username: String,
     password: String,
-    firstname: String,
-    lastname: String,
+    first_name: String,
+    last_name: String,
     address: [],
     phoneNumbers: [],
     ads: [],
@@ -42,8 +42,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 passport.use(new FacebookStrategy({
-    clientID: 12345678910,
-    clientSecret: "a",
+    clientID: 123,
+    clientSecret: "abc",
     callbackURL: "http://52.10.83.44/auth/facebook/callback",
     profileFields: ['id', 'emails', 'displayName', 'name']
   },
@@ -52,7 +52,7 @@ passport.use(new FacebookStrategy({
     process.nextTick(function() {
       console.log(profile); 
       // find the user in the database based on their facebook id
-      User.findOne({ 'id' : profile.id }, function(err, user) {
+      User.findOne({ 'username' : profile.id }, function(err, user) {
  
         // if there is an error, stop everything and return that
         // ie an error connecting to the database
@@ -67,10 +67,10 @@ passport.use(new FacebookStrategy({
             var newUser = new User();
  
             // set all of the facebook information in our user model
-            newUser.username    = profile.id; // set the users username                 
+            newUser.username    = profile.id.toString(); // set the users username                 
                                
-            newUser.firstname=profile.name.givenName;
-	    newUser.lastname=profile.name.familyName;
+            newUser.first_name=profile.name.givenName;
+	    newUser.last_name=profile.name.familyName;
 	    newUser.fb=true;
             // save our user to the database
             newUser.save(function(err) {
@@ -113,6 +113,12 @@ passport.use(new LocalStrategy(
     });
   }
 ));
+
+app.get('/test', ensureAuthenticated, function(req,res){
+res.status(200);
+console.log(req.user);
+res.end();
+});
 
 app.get('/logout', function(req, res){
   req.logout(); //kills the cookie
@@ -207,10 +213,12 @@ app.post('/validateuser', function(req,res){
                 if(err) throw err;
                 users.findOne(jsonData,function(err, items){
                     res.status(200);
-                    if(items)
+                    if(items){
+                        res.cookie('user', JSON.stringify(items));
                         res.end(JSON.stringify(items));
-                    else
+                    } else {
                         res.end("-1");
+                    }
                 });
             });
         });
@@ -232,7 +240,7 @@ app.post('/insertuser', function(req,res){
                 {
                     db.collection("users").insert(jsonData, function(err,records){});
                     res.writeHead(200);
-                    res.end();
+                    res.end("created");
                 }
                 else
                 {
@@ -241,6 +249,28 @@ app.post('/insertuser', function(req,res){
                 }
             });
         });
+    });
+});
+
+app.get('/getuser', function(req, res){
+    var jsonData = '';
+    req.on('data', function(chunk){jsonData += chunk});
+    req.on('end', function(){
+        jsonData=JSON.parse(jsonData);
+        var MongoClient = require('mongodb').MongoClient;
+        MongoClient.connect("mongodb://localhost/byu-classifieds", function(err, db){
+            if (err)
+                throw err;
+            db.collection("users").findOne({_id: jsonData.id}, function(err, record){
+                if (!record) {
+                    res.writeHead(200);
+                    res.end(-1);
+                } else {
+                    res.writeHead(200);
+                    res.end(record);
+                }
+            })
+        })
     });
 });
 
@@ -403,6 +433,39 @@ app.post('/get_category_items', function (req, res) {
                     });
                 });
             });
+        });
+    });
+});
+
+app.post('/get_user_items', function(req, res) {
+    var jsonData = '';
+    req.on('data', function(chunk){jsonData += chunk;});
+    req.on('end', function(){
+        jsonData = JSON.parse(jsonData);
+        var ObjectId = require('mongodb').ObjectID;
+        var MongoClient = require('mongodb').MongoClient;
+        console.log("\nGet items by user, JSON Request:\n" + ObjectId(jsonData.UserID));
+        MongoClient.connect("mongodb://localhost/byu-classifieds", function(err, db) {
+            if (err) throw err;
+            db.collection("ads", function(err, ads){
+                if (err) {
+                    res.writeHead(500);
+                    res.end("Error");
+                }
+                console.log({UserID: ObjectId(jsonData.UserID)});
+                ads.find({"UserID": ObjectId(jsonData.UserID)}, function(err, items){
+                    if (err) {
+                        res.writeHead(500);
+                        res.end('Error');
+                    }
+                    console.log("Document Array: ");
+                    console.log(items);
+                    res.writeHead(200);
+                    res.end(JSON.stringify(items));
+                    res.end(JSON.stringify(items));
+                });
+            });
+
         });
     });
 });
